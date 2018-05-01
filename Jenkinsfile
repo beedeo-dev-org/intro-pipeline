@@ -11,6 +11,12 @@ pipeline {
         echo "${TEST_USER_PSW}"
       }
     }
+    stage('Checkpoint') {
+      agent none
+      steps {
+        checkpoint 'Checkpoint'
+      }
+    }
     stage('Testing') {
       failFast true
       parallel {
@@ -37,16 +43,15 @@ pipeline {
   }
   environment {
     MY_NAME = 'Mary'
-    TEST_USER = credentials('test-user')
+      TEST_USER = credentials('test-user')
   }
   post {
     aborted {
       echo 'Why didn\'t you push my button?'
-      
     }
-    
   }
   parameters {
     string(name: 'Name', defaultValue: 'whoever you are', description: 'Who should I say hi to?')
   }
 }
+// vim: set ts=2 sts=2 sw=2 et ai:
